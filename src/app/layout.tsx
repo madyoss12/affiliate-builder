@@ -1,3 +1,5 @@
+'use client'
+
 import { AuthProvider } from '@/contexts/AuthContext'
 import { Inter } from 'next/font/google'
 import './globals.css'
