@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
-import { Card } from '@/components/ui/card'
-import { createClient } from '@/lib/supabase/client'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card'
+import { createClient } from '../../lib/supabase/client'
 
 export const metadata: Metadata = {
   title: 'Dashboard - Affiliate Builder',
