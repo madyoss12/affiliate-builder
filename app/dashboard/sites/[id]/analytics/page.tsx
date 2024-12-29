@@ -1,6 +1,8 @@
+'use client'
+
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
-import { ArrowLeft, TrendingUp, Users, Clock, DollarSign } from 'lucide-react'
+import { ArrowLeft, TrendingUp, Users, Clock, DollarSign, BarChart, LineChart, PieChart } from 'lucide-react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 
@@ -43,7 +45,7 @@ async function getAnalytics(siteId: string) {
   return analytics
 }
 
-export default async function SiteAnalyticsPage({ params }: PageProps) {
+export default async function SiteAnalyticsPage({ params }: { params: { id: string } }) {
   const [site, analytics] = await Promise.all([
     getSite(params.id),
     getAnalytics(params.id),
@@ -156,6 +158,32 @@ export default async function SiteAnalyticsPage({ params }: PageProps) {
 
       {/* Charts */}
       <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="p-6 bg-white rounded-lg shadow">
+            <div className="flex items-center mb-4">
+              <BarChart className="w-6 h-6 mr-2" />
+              <h2 className="text-xl font-semibold">Visites</h2>
+            </div>
+            <p className="text-3xl font-bold">1,234</p>
+          </div>
+          
+          <div className="p-6 bg-white rounded-lg shadow">
+            <div className="flex items-center mb-4">
+              <LineChart className="w-6 h-6 mr-2" />
+              <h2 className="text-xl font-semibold">Conversions</h2>
+            </div>
+            <p className="text-3xl font-bold">56</p>
+          </div>
+          
+          <div className="p-6 bg-white rounded-lg shadow">
+            <div className="flex items-center mb-4">
+              <PieChart className="w-6 h-6 mr-2" />
+              <h2 className="text-xl font-semibold">Taux de conversion</h2>
+            </div>
+            <p className="text-3xl font-bold">4.5%</p>
+          </div>
+        </div>
+
         <div className="bg-white shadow rounded-lg">
           <div className="p-6">
             <h3 className="text-lg font-medium leading-6 text-gray-900">

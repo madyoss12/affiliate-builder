@@ -1,5 +1,6 @@
-import { Metadata } from 'next'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card'
+'use client'
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { createClient } from '../../lib/supabase/client'
 
 export const metadata: Metadata = {
