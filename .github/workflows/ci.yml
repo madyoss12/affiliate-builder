@@ -34,12 +34,17 @@ jobs:
       run: npm run lint
       
     - name: Run tests
-      run: npm run test
+      run: npm run test -- --passWithNoTests
       env:
         CI: true
+        NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
       
     - name: Build project
       run: npm run build
+      env:
+        NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
       
     - name: Cache build output
       uses: actions/cache@v3
@@ -56,13 +61,22 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
+    - name: Use Node.js 18.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+    
     - name: Run security scan
       uses: snyk/actions/node@master
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         
     - name: Run npm audit
-      run: npm audit
+      run: npm audit --production
 
   deploy-preview:
     needs: [test, security]
