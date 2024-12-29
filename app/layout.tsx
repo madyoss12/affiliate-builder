@@ -1,12 +1,13 @@
-import { AuthProvider } from '@/contexts/AuthContext'
+import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { AuthProvider } from '@/contexts/AuthContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata = {
-  title: 'Affiliate Builder - Créez vos sites d\'affiliation',
-  description: 'Créez et gérez facilement vos sites d\'affiliation avec Affiliate Builder',
+export const metadata: Metadata = {
+  title: 'Affiliate Builder',
+  description: 'Créez et gérez vos sites d\'affiliation',
 }
 
 export default function RootLayout({
@@ -17,7 +18,9 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className={inter.className}>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   )
