@@ -3,9 +3,12 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  output: 'standalone',
-  trailingSlash: true,
-  poweredByHeader: false,
+  images: {
+    unoptimized: true,
+  },
+  experimental: {
+    serverActions: true,
+  },
 }
 
 module.exports = nextConfig
