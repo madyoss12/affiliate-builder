@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { useAuthContext } from '@/contexts/AuthContext'
+import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
@@ -23,7 +23,7 @@ type RegisterFormData = z.infer<typeof registerSchema>
 export function RegisterForm() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
-  const { signUp } = useAuthContext()
+  const { signUp } = useAuth()
   const router = useRouter()
   
   const {

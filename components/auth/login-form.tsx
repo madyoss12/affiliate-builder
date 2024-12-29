@@ -1,41 +1,26 @@
 'use client'
 
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { useAuthContext } from '@/contexts/AuthContext'
+import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
-const loginSchema = z.object({
-  email: z.string().email('Email invalide'),
-  password: z.string().min(6, 'Le mot de passe doit contenir au moins 6 caractères'),
-})
-
-type LoginFormData = z.infer<typeof loginSchema>
-
 export function LoginForm() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
-  const { signIn } = useAuthContext()
+  const { signIn } = useAuth()
   const router = useRouter()
-  
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
-  })
 
-  const onSubmit = async (data: LoginFormData) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
     try {
       setError(null)
       setLoading(true)
-      await signIn(data.email, data.password)
+      await signIn(email, password)
       router.push('/dashboard')
-    } catch (e) {
+    } catch (error) {
       setError('Email ou mot de passe incorrect')
     } finally {
       setLoading(false)
@@ -59,7 +44,7 @@ export function LoginForm() {
         </p>
       </div>
 
-      <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit} className="mt-8 space-y-6">
         <div className="space-y-4 rounded-md">
           <div>
             <label htmlFor="email" className="block text-sm font-medium">
@@ -68,12 +53,11 @@ export function LoginForm() {
             <input
               id="email"
               type="email"
-              {...register('email')}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
+              required
             />
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-            )}
           </div>
 
           <div>
@@ -83,14 +67,11 @@ export function LoginForm() {
             <input
               id="password"
               type="password"
-              {...register('password')}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
+              required
             />
-            {errors.password && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.password.message}
-              </p>
-            )}
           </div>
         </div>
 
