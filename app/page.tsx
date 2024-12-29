@@ -1,5 +1,13 @@
 import Link from 'next/link'
 import { ArrowRight, Check } from 'lucide-react'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Affiliate Builder - Créez vos sites d\'affiliation',
+  description: 'Créez et gérez facilement vos sites d\'affiliation avec Affiliate Builder',
+}
+
+export const dynamic = 'force-static'
 
 export default function HomePage() {
   const features = [
@@ -267,7 +275,7 @@ export default function HomePage() {
           </div>
           <div className="mt-8 pt-8 border-t">
             <p className="text-sm text-gray-600">
-              © 2024 Affiliate Builder. Tous droits réservés.
+              2024 Affiliate Builder. Tous droits réservés.
             </p>
           </div>
         </div>
