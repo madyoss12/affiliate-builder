@@ -4,10 +4,33 @@ import { Suspense } from 'react'
 import { Plus } from 'lucide-react'
 import Link from 'next/link'
 import { SiteList } from '@/components/dashboard/sites/site-list'
-import { CreateSiteForm } from '@/components/dashboard/sites/create-site-form'
 import { createClient } from '@/lib/supabase/client'
 
-export default function SitesPage() {
+async function getSites() {
+  const supabase = createClient()
+  const { data: sites, error } = await supabase
+    .from('sites')
+    .select(`
+      id,
+      name,
+      domain:domains(name, customDomain),
+      status,
+      template:templates(id, name),
+      statistics:site_statistics(visitors, pageviews, conversions, revenue)
+    `)
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    console.error('Error loading sites:', error)
+    return []
+  }
+
+  return sites
+}
+
+export default async function SitesPage() {
+  const sites = await getSites()
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
@@ -22,7 +45,7 @@ export default function SitesPage() {
       </div>
 
       <Suspense fallback={<div>Chargement...</div>}>
-        <SiteList />
+        <SiteList initialSites={sites} />
       </Suspense>
     </div>
   )

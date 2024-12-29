@@ -11,15 +11,28 @@ interface PageProps {
   }
 }
 
-async function getSite(id: string) {
+async function getSiteAnalytics(siteId: string) {
   const supabase = createClient()
   const { data: site, error } = await supabase
     .from('sites')
-    .select('*')
-    .eq('id', id)
+    .select(`
+      id,
+      name,
+      statistics:site_statistics(
+        visitors,
+        pageviews,
+        conversions,
+        revenue
+      )
+    `)
+    .eq('id', siteId)
     .single()
 
-  if (error) return null
+  if (error || !site) {
+    console.error('Error loading site analytics:', error)
+    return null
+  }
+
   return site
 }
 
@@ -37,12 +50,19 @@ async function getAnalytics(siteId: string) {
 }
 
 export default async function SiteAnalyticsPage({ params }: { params: { id: string } }) {
-  const [site, analytics] = await Promise.all([
-    getSite(params.id),
-    getAnalytics(params.id),
-  ])
+  const site = await getSiteAnalytics(params.id)
+  const analytics = await getAnalytics(params.id)
 
-  if (!site) notFound()
+  if (!site) {
+    notFound()
+  }
+
+  const stats = site.statistics || {
+    visitors: 0,
+    pageviews: 0,
+    conversions: 0,
+    revenue: 0,
+  }
 
   const periods = [
     { name: '7 derniers jours', value: '7d' },
@@ -51,10 +71,10 @@ export default async function SiteAnalyticsPage({ params }: { params: { id: stri
     { name: '12 derniers mois', value: '12m' },
   ]
 
-  const stats = [
+  const statsList = [
     {
       name: 'Visiteurs uniques',
-      value: site.statistics.visitors.toLocaleString(),
+      value: stats.visitors.toLocaleString(),
       change: '+12.3%',
       changeType: 'positive',
       icon: Users,
@@ -114,7 +134,7 @@ export default async function SiteAnalyticsPage({ params }: { params: { id: stri
 
       {/* Stats */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat) => (
+        {statsList.map((stat) => (
           <div
             key={stat.name}
             className="bg-white overflow-hidden shadow rounded-lg"
