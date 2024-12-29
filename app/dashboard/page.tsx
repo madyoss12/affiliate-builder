@@ -3,11 +3,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { createClient } from '../../lib/supabase/client'
 
-export const metadata: Metadata = {
-  title: 'Dashboard - Affiliate Builder',
-  description: 'Tableau de bord de votre compte Affiliate Builder',
-}
-
 export default async function DashboardPage() {
   const stats = [
     {

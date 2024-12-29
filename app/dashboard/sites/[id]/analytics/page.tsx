@@ -1,7 +1,6 @@
 'use client'
 
 import { notFound } from 'next/navigation'
-import { Metadata } from 'next'
 import { ArrowLeft, TrendingUp, Users, Clock, DollarSign, BarChart, LineChart, PieChart } from 'lucide-react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
@@ -9,14 +8,6 @@ import { createClient } from '@/lib/supabase/client'
 interface PageProps {
   params: {
     id: string
-  }
-}
-
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const site = await getSite(params.id)
-  return {
-    title: `Analytics ${site?.name || 'Site'} - Affiliate Builder`,
-    description: 'Statistiques et performances du site',
   }
 }
 

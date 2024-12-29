@@ -2,12 +2,6 @@
 
 import Link from 'next/link'
 import { LoginForm } from '@/components/auth/login-form'
-import { Metadata } from 'next'
-
-export const metadata: Metadata = {
-  title: 'Connexion - Affiliate Builder',
-  description: 'Connectez-vous à votre compte Affiliate Builder',
-}
 
 export default function LoginPage() {
   return (
