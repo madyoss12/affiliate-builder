@@ -4,10 +4,9 @@ import { Suspense } from 'react'
 import { Plus } from 'lucide-react'
 import Link from 'next/link'
 import { SiteList } from '@/components/dashboard/sites/site-list'
-import { createClient } from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 
 async function getSites() {
-  const supabase = createClient()
   const { data: sites, error } = await supabase
     .from('sites')
     .select(`

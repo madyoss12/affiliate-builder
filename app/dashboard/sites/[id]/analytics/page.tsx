@@ -3,7 +3,7 @@
 import { notFound } from 'next/navigation'
 import { ArrowLeft, TrendingUp, Users, Clock, DollarSign, BarChart, LineChart, PieChart } from 'lucide-react'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 
 interface PageProps {
   params: {
@@ -12,7 +12,6 @@ interface PageProps {
 }
 
 async function getSiteAnalytics(siteId: string) {
-  const supabase = createClient()
   const { data: site, error } = await supabase
     .from('sites')
     .select(`
@@ -37,7 +36,6 @@ async function getSiteAnalytics(siteId: string) {
 }
 
 async function getAnalytics(siteId: string) {
-  const supabase = createClient()
   const { data: analytics, error } = await supabase
     .from('statistics')
     .select('*')

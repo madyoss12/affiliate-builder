@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { MoreVertical, Globe, Edit, Trash2, BarChart2, Plus } from 'lucide-react'
-import { createClient } from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 
 interface Site {
   id: string
@@ -60,22 +60,15 @@ export function SiteList({ initialSites = [] }: { initialSites?: Site[] }) {
   }
 
   const handleDelete = async (siteId: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer ce site ?')) return
-
-    setIsDeleting(siteId)
     try {
-      const supabase = createClient()
-      const { error } = await supabase
-        .from('sites')
-        .delete()
-        .eq('id', siteId)
-
+      setIsDeleting(siteId)
+      const { error } = await supabase.from('sites').delete().eq('id', siteId)
+      
       if (error) throw error
-
+      
       setSites(sites.filter(site => site.id !== siteId))
     } catch (error) {
-      console.error('Erreur lors de la suppression:', error)
-      alert('Erreur lors de la suppression du site')
+      console.error('Error deleting site:', error)
     } finally {
       setIsDeleting(null)
     }
