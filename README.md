@@ -101,6 +101,6 @@ Les contributions sont les bienvenues ! N'hésitez pas à :
 
 ## 📞 Support
 
-- Documentation : [docs.affiliate-builder.com](https://docs.affiliate-builder.com)
-- Email : support@affiliate-builder.com
+- Documentation : [https://doc.affiliate-builder-new.vercel.app/]
+- Email : support@affiliate-builder-new.vercel.app/
 - Issues : [GitHub Issues](https://github.com/votre-username/affiliate-builder/issues)
